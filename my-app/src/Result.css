@@ -1,0 +1,19 @@
+.divResult {
+    padding-top: 100px;
+    padding-left: 75px;
+}
+
+.divList {
+    display: inline-block;  
+}
+
+.imageUsers {
+    margin : 5px 10px 5px 10px;
+    width: 100px;
+    position :relative;
+}
+
+.imageUsers:hover {
+    box-shadow: 0 0 0 4px blue; 
+    width: 100px;
+}

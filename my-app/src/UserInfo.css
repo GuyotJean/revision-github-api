@@ -1,0 +1,50 @@
+.imageData {
+    width: 200px;
+}
+
+.infoUsers {
+    display: inline-block;
+    border: 1px solid black;
+    width: 350px;
+}
+
+.pLocation {
+    display: inline;
+}
+
+.svgLocation {
+    margin-top: -6px;
+}
+
+.button {
+    margin-top: 25px;
+}
+
+.repoShow {
+    float: right;
+    margin-top: 100px;
+    margin-right: 300px;
+    width: 500px;
+    border: 1px solid black;
+}
+
+.yo {
+    border: 1px solid black;
+}
+
+.reposList {
+    display: inline-block;
+    width: 248px;
+    border: 1px solid black;
+}
+
+.orgDiv {
+    display: inline-block;
+    width: 250px;
+    margin-left: 500px;
+    margin-right: 150px;
+}
+
+.imageOrg {
+    width: 50px;
+}
