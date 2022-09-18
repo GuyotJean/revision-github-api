@@ -1,0 +1,6 @@
+- Enlever boutton next page/previous page quand elle ne sont pas dispo / FAIT
+- Gerer le zoom
+- Intégration
+- numéroter page
+- Possiblement voir pour le loading
+- - de code

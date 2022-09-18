@@ -6,7 +6,7 @@ import UserInfo from './UserInfo'
 import './App.css';
 
 
-const tokenApi = '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';
+const tokenApi = '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';
 
 class App extends React.Component {
     constructor(props) {
@@ -18,20 +18,21 @@ class App extends React.Component {
             userList : [],
             userInfos : {},
             deposInfos : [],
-            error : null,
-            idUserPage : 0,
             arrayOfId : [0],
             startLoading : false,
             userSelected : false,
             reposPages : [1,0],
             reposUrl : '',
+            searchingOn : false,
+            numberPageResult : []
 
         }
     }
 
     componentDidMount() {
+        //console.log("didMount");
         const arrayOfId = this.state.arrayOfId;
-        fetch('https://api.github.com/users?since=' + arrayOfId[arrayOfId.length -1] + '&per_page=27',{
+        fetch('https://api.github.com/users?since=' + arrayOfId[arrayOfId.length -1] + '&per_page=12',{
             method: "GET",
             headers : {
                 Authorization : 'token ' + tokenApi
@@ -50,8 +51,10 @@ class App extends React.Component {
 
     componentDidUpdate() {
         const arrayOfId = this.state.arrayOfId;
-        if (this.state.startLoading || this.state.userInfos === []) {
-            fetch('https://api.github.com/users?since=' + arrayOfId[arrayOfId.length -1] + '&per_page=27',{
+        //console.log('didUpdate');
+        if ((this.state.startLoading === true || this.state.userInfos === []) && !this.state.searchingOn) {
+            //console.log('1');
+            fetch('https://api.github.com/users?since=' + arrayOfId[arrayOfId.length -1] + '&per_page=12',{
                 method: "GET",
                 headers : {
                     Authorization : 'token ' + tokenApi
@@ -70,6 +73,7 @@ class App extends React.Component {
         }
 
         if (this.state.userInfos.avatar != undefined && this.state.startLoading) {
+            //console.log('2');
             this.setState({
                 userSelected: true,
                 startLoading: false
@@ -82,8 +86,12 @@ class App extends React.Component {
     nextPage() {
 
         const arrayOfId = this.state.arrayOfId;
-        if (this.state.searchValue === '') {
-            fetch('https://api.github.com/users?since=' + arrayOfId[arrayOfId.length -1] + '&per_page=27',{
+        let arrayMaxPages = this.state.numberPageResult.slice()
+        const search = this.state.searchValue;
+        let usersTab = [];
+        //PAGES AVEC UTILISATEURS DE BASE
+        if (this.state.searchingOn === false) {
+            fetch('https://api.github.com/users?since=' + arrayOfId[arrayOfId.length -1] + '&per_page=12',{
                 method: "GET",
                 headers : {
                     Authorization : 'token ' + tokenApi
@@ -92,17 +100,39 @@ class App extends React.Component {
         .then(res => {    
             return res.headers.get('link');
         }).then( result => {
+            //console.log('lol');
             this.setState({
                 arrayOfId : arrayOfId.concat(result.slice(result.indexOf('=') + 1,result.indexOf('&'))),
                 startLoading: true,
             })
         })
+        //PAGES AVEC UTILISATEURS RECHERCHES
+        } else if ((this.state.searchingOn === true && arrayMaxPages[0] < arrayMaxPages[1]) && arrayMaxPages){
+          arrayMaxPages[0]++
+          fetch('https://api.github.com/search/users?per_page=12&page=' + arrayMaxPages[0] + '&q=' + search,{
+            method: "GET",
+            headers : {
+                Authorization : 'token ' + tokenApi
+                }
+            })
+            .then(res => res.json())
+            .then( result => {
+                usersTab = result.items;
+                //console.log(arrayMaxPages);
+                this.setState({
+                    userList : usersTab,
+                    numberPageResult : arrayMaxPages
+                })
 
+            })  
         }
     }
 
     previousPage() {
         const arrayOfId = this.state.arrayOfId;
+        let arrayMaxPages = this.state.numberPageResult.slice()
+        const search = this.state.searchValue;
+        let usersTab = [];
 
         if (arrayOfId.length > 1) {
             arrayOfId.pop()
@@ -113,38 +143,85 @@ class App extends React.Component {
                 startLoading : true,
             })
         }
+
+        if ((this.state.searchingOn === true && 1 < arrayMaxPages[0]) && arrayMaxPages) {
+            arrayMaxPages[0]--
+            fetch('https://api.github.com/search/users?per_page=12&page=' + arrayMaxPages[0] + '&q=' + search,{
+              method: "GET",
+              headers : {
+                  Authorization : 'token ' + tokenApi
+                  }
+                })
+              .then(res => res.json())
+              .then( result => {
+                  usersTab = result.items;
+                  //console.log(arrayMaxPages);
+                  this.setState({
+                      userList : usersTab,
+                      numberPageResult : arrayMaxPages
+                })
+  
+            })  
+        }
+        
     }
     
     changeInputValue(e) {
+        //console.log(Boolean(e.target.value.trim()))
+        
         this.setState({
             searchValue : e.target.value
         })
-
-        if (e.target.value === '') {
-            this.setState({
-                startLoading : true
-            })
-        }
     }
 
     searchResult(e) {
         let userList = this.state.userList.slice();
-        console.log(userList);
-        fetch('https://api.github.com/users/' + this.state.searchValue,{
-            method: "GET",
-            headers : {
-                Authorization : 'token ' + tokenApi
-            }
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            userList = userList.splice(0, userList.length, data)
-            console.log(userList)
-            this.setState({
-                userList: userList
-            })        
-        })
+        let search = this.state.searchValue
+        //console.log(e.target.value);
         e.preventDefault();
+        if(!Boolean(search.trim())) {
+            this.setState({
+                searchingOn: false,
+                startLoading : true,
+                arrayOfId : [0],
+                numberPageResult: []
+            })
+        } else {
+            this.setState({
+                searchingOn: true,
+                arrayOfId : [1]
+            })
+        }
+        if (Boolean(search.trim())) {
+            userList.splice(0, userList.length)
+            fetch('https://api.github.com/search/users?per_page=12&page=1&q=' + search,{
+                method: "GET",
+                headers : {
+                    Authorization : 'token ' + tokenApi
+                }
+            })
+            .then(res => {    
+                if (res.headers.get('link')) {
+
+                    let headersData = res.headers.get('link');
+                    let arrayMaxPage = [1];
+
+                    arrayMaxPage[1] = Number(headersData.slice(headersData.lastIndexOf('page') +5, headersData.lastIndexOf('&')));
+                    this.setState({
+                        numberPageResult : arrayMaxPage
+                    })
+
+                }
+                return res.json()
+            })
+            .then((data) => {
+                userList =  data
+                this.setState({
+                    userList: data.items
+                })     
+            })
+        }
+        this.returnPage()
     }
 
     mouseDown() {
@@ -211,13 +288,18 @@ class App extends React.Component {
                         url : element.url
                     })
                 })
+                console.log('yo');
                 userInfos.list_orgs = userInfosOrgs;
+                this.setState({
+                    userInfos : userInfos,
+                    startLoading : true
+                })
             })
         )
             
         
         //FETCH LES REPOS
-        fetch(userName.repos_url+ '?per_page=8&page=' + this.state.reposPages[0],{
+        fetch(userName.repos_url+ '?per_page=12&page=' + this.state.reposPages[0],{
             method: "GET",
             headers : {
                 Authorization : 'token ' + tokenApi
@@ -290,8 +372,8 @@ class App extends React.Component {
         let newUserArray = this.state.userInfos;
         if(arrayDeposPages[0] > 1){
             arrayDeposPages[0]--
-            console.log(this.state.reposUrl + '?per_page=8&page=' + arrayDeposPages[0])
-            fetch(this.state.reposUrl + '?per_page=8&page=' + arrayDeposPages[0],{
+            //console.log(this.state.reposUrl + '?per_page=12&page=' + arrayDeposPages[0])
+            fetch(this.state.reposUrl + '?per_page=12&page=' + arrayDeposPages[0],{
                 method: "GET",
                 headers : {
                     Authorization : 'token ' + tokenApi
@@ -301,7 +383,6 @@ class App extends React.Component {
             .then(
                 (result) => {
                     //newUserArray.depos = result;
-                    console.log(newUserArray);
                     this.setState({
                         userInfos : {
                             ...this.state.userInfos,
@@ -317,11 +398,11 @@ class App extends React.Component {
     nextDepos(){
         let arrayDeposPages = this.state.reposPages.slice();
         let newUserArray = this.state.userInfos;
-        console.log(arrayDeposPages);
+        //console.log(arrayDeposPages);
         if(arrayDeposPages[0] < arrayDeposPages[1]){
             arrayDeposPages[0]++
-            console.log(this.state.reposUrl + '?per_page=8&page=' + arrayDeposPages[0])
-            fetch(this.state.reposUrl + '?per_page=8&page=' + arrayDeposPages[0],{
+            //console.log(this.state.reposUrl + '?per_page=12&page=' + arrayDeposPages[0])
+            fetch(this.state.reposUrl + '?per_page=12&page=' + arrayDeposPages[0],{
                 method: "GET",
                 headers : {
                     Authorization : 'token ' + tokenApi
@@ -331,7 +412,6 @@ class App extends React.Component {
             .then(
                 (result) => {
                     //newUserArray.depos = result;
-                    console.log(newUserArray);
                     this.setState({
                         userInfos : {
                             ...this.state.userInfos,
@@ -365,8 +445,6 @@ class App extends React.Component {
                 nextDepos = {() => this.nextDepos()}
             />
             : <Result 
-
-
                 valueResult = {this.state.searchValue}
                 usersList = {this.state.userList}
                 selectUser = {index => this.selectUser(index)}
@@ -377,6 +455,8 @@ class App extends React.Component {
                 <ChangePage
                 nextPage = {() => this.nextPage()}
                 previousPage = {() => this.previousPage()}
+                arrayOfId = {this.state.arrayOfId}
+                numberPageResult = {this.state.numberPageResult}
              />
                 
             }

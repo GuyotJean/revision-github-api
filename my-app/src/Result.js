@@ -22,7 +22,9 @@ class Result extends React.Component {
         })
 
          return <div className = 'divResult'>
-            {userListShow}
+            <div className = 'resultContainer'>
+                {userListShow}
+            </div>
          </div>
     }
 }

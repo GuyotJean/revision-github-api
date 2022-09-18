@@ -61,7 +61,8 @@ class UserInfo extends React.Component {
                 
             <div className = 'orgDiv'>
             
-            {this.props.userInfos.list_orgs.map((element, index) => {
+            {this.props.userInfos.list_orgs ?
+                this.props.userInfos.list_orgs.map((element, index) => {
                 return  <a 
                         href= {'https://github.com/' + this.props.userInfos.list_orgs[index].login}
                         key={index}
@@ -71,7 +72,7 @@ class UserInfo extends React.Component {
                             src={this.props.userInfos.list_orgs[index].avatarOrgs}>  
                             </img>
                         </a>
-            })}
+            }) : <div>LOLOLOLOLOL</div>}
             </div>
 
             <button

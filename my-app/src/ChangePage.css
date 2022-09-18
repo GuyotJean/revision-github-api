@@ -9,13 +9,11 @@
   }
  
   .right {
-    margin-left: 1035px;
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
   }
   
   .left {
-    margin-left: 90px;
     transform: rotate(135deg);
     -webkit-transform: rotate(135deg);
   }
@@ -25,3 +23,35 @@
     border-width: 0 5px 5px 0;
     cursor: grab;
   }
+
+  .buttonP {
+    display: inline;
+    font-size: 
+  }
+
+  .buttons {
+    padding: 5px 8px;
+    border: 2px solid gray;
+    display: inline;
+    margin-bottom: 50px;
+  }
+
+  .next {
+    float: right;
+    margin-right: 275px;
+  }
+
+  .previous {
+    float: left;
+    margin-left: 235px;
+  }
+
+  .buttons:hover {
+    border: 2px solid black;
+    cursor: pointer;
+  }
+
+
+
+
+
