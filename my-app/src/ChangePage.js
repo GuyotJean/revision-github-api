@@ -4,7 +4,6 @@ import './ChangePage.css';
 class ChangePage extends React.Component {
     render() {
     return <div>
-        
         {this.props.arrayOfId.length > 1 &&
         <div 
         className = "buttons previous red"

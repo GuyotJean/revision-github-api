@@ -1,6 +1,19 @@
 - Enlever boutton next page/previous page quand elle ne sont pas dispo / FAIT
+(Toujours sur les bouttons 
+---> Les animations se lance sur les 2 boutons au lieux de juste celui séléctionné / FAIT grâce au float
+---> Les boutons changent de place quand les repos affiché ne sont pas pairs / FAIT grace au clear
+---> Bug le chargements se fait moin bien depuis que j'ai commencé l'animation Régler ça acabt de perfectioner l'animation qui était pas trop mal
+---> Arriver à faire une animation quand on clic dessus.
+)
+
+
+
+
+
 - Gerer le zoom
 - Intégration
+    -Refaire le tableaux des repos
+
 - numéroter page
 - Possiblement voir pour le loading
 - - de code

@@ -1,11 +1,13 @@
 .imageData {
-    width: 200px;
+    width: 350px;
+    -webkit-box-shadow: 7px 9px 9px 5px rgba(0,0,0,0.55); 
+    box-shadow: 7px 9px 9px 5px rgba(0,0,0,0.55);   
 }
 
 .infoUsers {
     display: inline-block;
-    border: 3px solid blueviolet;
     width: 350px;
+    margin-left: 150px;
 }
 
 .pLocation {
@@ -13,39 +15,113 @@
 }
 
 .svgLocation {
-    margin-top: -6px;
+    margin-top: -5px;
+    margin-left: -5px;
+    position: absolute;
 }
 
 .button {
     margin-top: 25px;
 }
 
-.repoShow {
+.repoList {
     float: right;
-    margin-top: 100px;
-    margin-right: 300px;
-    width: 500px;
-    border: 1px solid black;
+    margin-right: 10%;
+    width: 1000px;
 }
 
-.yo {
-    margin-top: 125px;
-    border: 1px solid green;
+.infoUserContainer {
+    margin-top: 50px;
 }
 
-.reposList {
+.repoItem {
+    float: left;
     display: inline-block;
-    width: 248px;
+    width: 465px;
+    height: 150px;
     border: 1px solid black;
+    -webkit-box-shadow: 5px 3px 3px 2px rgba(0,0,0,0.22); 
+    box-shadow: 5px 3px 3px 2px rgba(0,0,0,0.22);
+    margin-right: 4px;
+    padding: 5px;
+}
+
+.textItem {
+    margin: 0;
+    font-size: 0.9em;
+    display: inline;
 }
 
 .orgDiv {
-    display: inline-block;
-    width: 250px;
-    margin-left: 500px;
-    margin-right: 150px;
+    width: 200px;
+    position: absolute;
+    margin-left: 1700px;
+    margin-top: -250px;
+    font-size : 1.2em;
+    font-weight: bold;
+    color:rgb(119, 122, 124);
+    text-decoration: underline;
+    font-style: italic;
 }
 
 .imageOrg {
     width: 50px;
+    display: inline-block;
+    margin : 2px;
+}
+
+.textInfo {
+    font-size : 1.2em;
+    border-bottom: 1px gray solid;
+}
+
+.locationInfo {
+    border-bottom: 1px gray solid;
+}
+
+.pLocation {
+    font-size : 1.2em;
+    margin-left: 30px;
+}
+
+.buttonRepo {
+    margin-left: 200px;
+    margin-top: 5%;
+    height: 40px;
+    width: 55px;
+    cursor: pointer;
+    border: 1px gray solid;
+    background-color: rgb(216, 217, 218);
+    border-radius: 15px;
+}
+
+.buttonRepo:hover{
+    background-color: rgb(150, 152, 153);
+}
+
+.cantClick {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.cantClick:hover {
+    background-color: rgb(216, 217, 218);
+}
+
+.nextRepo {
+    margin-right: 270px;
+    float : right; /* Permet au boutons de bouger indépendamment des autres */
+}
+
+
+#clicked {
+    margin-top: 7%;
+    border: 2px rgb(152, 74, 74) solid;
+    transition: all 0.2s;
+   
+}
+
+.divButtonsList {
+    height : 100px;
+    clear : both; /* Permet au boutons de rester avec la bonne position quand les repos ne sont pas pairs. */
 }

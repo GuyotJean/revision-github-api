@@ -6,7 +6,7 @@ import UserInfo from './UserInfo'
 import './App.css';
 
 
-const tokenApi = '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';
+const tokenApi = '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';
 
 class App extends React.Component {
     constructor(props) {
@@ -21,11 +21,14 @@ class App extends React.Component {
             arrayOfId : [0],
             startLoading : false,
             userSelected : false,
-            reposPages : [1,0],
+            numberReposPages : [1,1],
             reposUrl : '',
             searchingOn : false,
-            numberPageResult : []
-
+            numberPageResult : [],
+            arrayCssClass : Array(12).fill('lastDiv'),
+            mouseHover : false,
+            isButtonUserNextClicked  : false, 
+            isButtonUserPrevClicked : false,    
         }
     }
 
@@ -80,6 +83,26 @@ class App extends React.Component {
 
             })
         }
+
+        //Tentative de gérer les class CSS des bouttons pour afficher les repos dans le profil d'utilisateurs
+
+        let reposPage = this.state.numberReposPages.slice();
+        let buttonUserReposPrevClass = this.state.buttonUserReposPrevClass;
+        let buttonUserReposNextClass = this.state.buttonUserReposNextClass;
+
+        if (reposPage[0] === 1 ) {
+            buttonUserReposPrevClass = 'buttonRepo cantClick'
+        }
+
+        if (reposPage[0] === reposPage[1]) {
+            buttonUserReposNextClass = 'buttonRepo cantClick'
+        }
+
+        /*this.setState({
+            reposPage : reposPage,
+            buttonUserReposPrevClass : buttonUserReposPrevClass,
+            buttonUserReposNextClass : buttonUserReposNextClass,
+        })*/
 
     }
 
@@ -167,19 +190,19 @@ class App extends React.Component {
     }
     
     changeInputValue(e) {
-        //console.log(Boolean(e.target.value.trim()))
         
+        let searchValue = e.target.value.split(' ').join('');
+
         this.setState({
-            searchValue : e.target.value
+            searchValue : searchValue
         })
     }
 
     searchResult(e) {
         let userList = this.state.userList.slice();
-        let search = this.state.searchValue
-        //console.log(e.target.value);
+        let search = this.state.searchValue;
         e.preventDefault();
-        if(!Boolean(search.trim())) {
+        if(!Boolean(search)) {
             this.setState({
                 searchingOn: false,
                 startLoading : true,
@@ -192,7 +215,7 @@ class App extends React.Component {
                 arrayOfId : [1]
             })
         }
-        if (Boolean(search.trim())) {
+        if (Boolean(search)) {
             userList.splice(0, userList.length)
             fetch('https://api.github.com/search/users?per_page=12&page=1&q=' + search,{
                 method: "GET",
@@ -204,13 +227,18 @@ class App extends React.Component {
                 if (res.headers.get('link')) {
 
                     let headersData = res.headers.get('link');
-                    let arrayMaxPage = [1];
+                    let numberPageResult = [1];
 
-                    arrayMaxPage[1] = Number(headersData.slice(headersData.lastIndexOf('page') +5, headersData.lastIndexOf('&')));
+                    numberPageResult[1] = Number(headersData.slice(headersData.lastIndexOf('page') +5, headersData.lastIndexOf('&')));
                     this.setState({
-                        numberPageResult : arrayMaxPage
+                        numberPageResult : numberPageResult
                     })
 
+                } else {
+                    let numberPageResult = [1,1];
+                    this.setState({
+                        numberPageResult : numberPageResult
+                    })
                 }
                 return res.json()
             })
@@ -241,16 +269,13 @@ class App extends React.Component {
         this.setState({
             userSelected: false,
             userInfos : {},
-            reposPages: [1,0],
+            numberReposPages: [1,1],
             reposUrl : ''
         })
     }
 
+    //A delete
     selectUser(index) {
-        this.setState({
-            
-        })
-
         this.getUserInfo(index)
     }
 
@@ -288,7 +313,6 @@ class App extends React.Component {
                         url : element.url
                     })
                 })
-                console.log('yo');
                 userInfos.list_orgs = userInfosOrgs;
                 this.setState({
                     userInfos : userInfos,
@@ -299,7 +323,7 @@ class App extends React.Component {
             
         
         //FETCH LES REPOS
-        fetch(userName.repos_url+ '?per_page=12&page=' + this.state.reposPages[0],{
+        fetch(userName.repos_url + '?per_page=6&page=' + this.state.numberReposPages[0],{
             method: "GET",
             headers : {
                 Authorization : 'token ' + tokenApi
@@ -308,14 +332,14 @@ class App extends React.Component {
         .then(res => {    
             if (res.headers.get('link')) {
                 
-                let arrayReposMax = [this.state.reposPages[0],null]
+                let arrayReposMax = [this.state.numberReposPages[0],null]
                 let headersData = res.headers.get('link')
 
                 
                 headersData = headersData.slice(headersData.indexOf('&page=', headersData.indexOf(',')))
                 arrayReposMax[1] = Number(headersData.slice(headersData.indexOf('=') + 1,headersData.indexOf('>'))) 
                 this.setState({
-                    reposPages : arrayReposMax,
+                    numberReposPages : arrayReposMax,
                 })
             }
             return res.json()
@@ -367,13 +391,14 @@ class App extends React.Component {
         
     }
 
+    /*Fonction doit changer de nom normalement*/
     previousDepos() {
-        let arrayDeposPages = this.state.reposPages.slice();
-        let newUserArray = this.state.userInfos;
+        /*Partie des changements des pages*/
+        let arrayDeposPages = this.state.numberReposPages.slice();
+        let newUserArray = [];
         if(arrayDeposPages[0] > 1){
             arrayDeposPages[0]--
-            //console.log(this.state.reposUrl + '?per_page=12&page=' + arrayDeposPages[0])
-            fetch(this.state.reposUrl + '?per_page=12&page=' + arrayDeposPages[0],{
+            fetch(this.state.reposUrl + '?per_page=6&page=' + arrayDeposPages[0],{
                 method: "GET",
                 headers : {
                     Authorization : 'token ' + tokenApi
@@ -382,27 +407,44 @@ class App extends React.Component {
             .then(res => res.json())
             .then(
                 (result) => {
-                    //newUserArray.depos = result;
+                    result.forEach((element) => {
+                        newUserArray.push({
+                            name : element.name,
+                            description : element.description,
+                            size : element.size,
+                            language : element.language
+    
+                        })
+                    })
+
                     this.setState({
                         userInfos : {
                             ...this.state.userInfos,
-                            depos : result},
-                            reposPages : arrayDeposPages
+                            depos : newUserArray},
+                            numberReposPages : arrayDeposPages
                     })
                 }
             )
         }
 
+        /*Partie pour les actualisations des bouttons
+        let buttonCssClass = this.state.buttonUserReposPrevClass;
+        if (this.props.numberReposPages[0] === 1 ) {
+            buttonPrevClass = 'buttonRepo cantClick'
+        }*/
+
     }
 
+    /*Click sur le boutton pour charger les repos sur la page des utilisateurs*/
     nextDepos(){
-        let arrayDeposPages = this.state.reposPages.slice();
-        let newUserArray = this.state.userInfos;
-        //console.log(arrayDeposPages);
+        let arrayDeposPages = this.state.numberReposPages.slice();
+        let newUserArray = [];
+
+        
         if(arrayDeposPages[0] < arrayDeposPages[1]){
             arrayDeposPages[0]++
             //console.log(this.state.reposUrl + '?per_page=12&page=' + arrayDeposPages[0])
-            fetch(this.state.reposUrl + '?per_page=12&page=' + arrayDeposPages[0],{
+            fetch(this.state.reposUrl + '?per_page=6&page=' + arrayDeposPages[0],{
                 method: "GET",
                 headers : {
                     Authorization : 'token ' + tokenApi
@@ -411,18 +453,51 @@ class App extends React.Component {
             .then(res => res.json())
             .then(
                 (result) => {
-                    //newUserArray.depos = result;
+                    result.forEach((element) => {
+                        newUserArray.push({
+                            name : element.name,
+                            description : element.description,
+                            size : element.size,
+                            language : element.language
+    
+                        })
+                    })
+
                     this.setState({
                         userInfos : {
                             ...this.state.userInfos,
-                            depos : result},
-                            reposPages : arrayDeposPages
+                            depos : newUserArray},
+                            numberReposPages : arrayDeposPages
                     })
                 }
             )
         }
 
     }
+    
+    /*Animations du boutton UserInfosNext quand le clic est pressé*/
+    onMouseDownNextUserInfo() {
+
+       this.setState({
+        isButtonUserNextClicked : true,
+       })
+    }
+
+    onMouseDownPrevUserInfo() {
+
+        this.setState({
+            isButtonUserPrevClicked : true,
+        })
+    }
+
+    /*Animations s'enlève quand le clic est terminé dans UserInfo*/
+    onMouseUpUserInfo() {
+        this.setState({
+            isButtonUserNextClicked : false,
+            isButtonUserPrevClicked : false,
+           })
+    }
+
 
     render() {
         const isUserSelected = this.state.userSelected;
@@ -443,11 +518,21 @@ class App extends React.Component {
                 userInfos = {this.state.userInfos}
                 previousDepos = {() => this.previousDepos()}
                 nextDepos = {() => this.nextDepos()}
+                numberReposPages = {this.state.numberReposPages}
+                onMouseDownNextUserInfo = {() => this.onMouseDownNextUserInfo()}
+                onMouseDownPrevUserInfo = {() => this.onMouseDownPrevUserInfo()}
+                onMouseUpUserInfo = {() => this.onMouseUpUserInfo()}
+                isButtonNextClicked = {this.state.isButtonUserNextClicked}
+                isButtonPrevClicked = {this.state.isButtonUserPrevClicked}
+
             />
             : <Result 
                 valueResult = {this.state.searchValue}
                 usersList = {this.state.userList}
                 selectUser = {index => this.selectUser(index)}
+                mouseOverImg = {index => this.mouseOverImg(index)}
+                mouseOutImg = {index => this.mouseOutImg(index)}
+                arrayCssClass = {this.state.arrayCssClass}
             />
             }
 
