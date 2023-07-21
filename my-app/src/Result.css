@@ -1,11 +1,11 @@
 .divResult {
     padding-top: 50px;
-    margin-left: 220px;
+    margin-left: 13.5%;
 }
 
 .blackDiv {
     display: inline-block;
-    margin: 10px 15px 10px 15px;
+    margin: 1%;
     background-color: black;
     width: 325px;
     height: 325px;
@@ -63,5 +63,73 @@
     margin: 0;
     margin-top: 8px;
     color: white;
+}
+
+
+@media (max-width: 790px) {
+    .divResult {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 326px;
+    }    
+}
+
+@media (min-width: 791px) {
+    .divResult {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 685px;
+    }    
+}
+
+@media (min-width: 1230px) {
+    .divResult {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 1038px;
+    } 
+}      
+
+@media (min-width: 1500px) {
+    .divResult {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 1415px;
+    }
+}
+
+@media (max-width: 330px) {
+    .divResult {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 245px;
+    }
+    .imgDiv {
+        width: 240px;
+        height: 240px;
+    }
+    .blackDiv {
+        width: 240px;
+        height: 240px;
+    }
+    .wrapButtonProfil {
+        width: 240px;
+        height: 240px;
+        margin-top: -315px;
+    }
+    .buttonProfil {
+        width: 110px;
+        height: 35px;
+        margin-top: 250px;
+        margin-left: 70px;
+        position: absolute;
+        border-radius: 15px;
+        border: 1px rgb(221, 208, 208) solid;
+    }
 }
 

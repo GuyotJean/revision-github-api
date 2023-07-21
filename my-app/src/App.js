@@ -6,7 +6,7 @@ import UserInfo from './UserInfo'
 import './App.css';
 
 
-const tokenApi = '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';
+const tokenApi = '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';
 
 class App extends React.Component {
     constructor(props) {
@@ -481,6 +481,8 @@ class App extends React.Component {
        this.setState({
         isButtonUserNextClicked : true,
        })
+
+       this.nextDepos();
     }
 
     onMouseDownPrevUserInfo() {
@@ -488,6 +490,8 @@ class App extends React.Component {
         this.setState({
             isButtonUserPrevClicked : true,
         })
+
+        this.previousDepos();
     }
 
     /*Animations s'enlève quand le clic est terminé dans UserInfo*/

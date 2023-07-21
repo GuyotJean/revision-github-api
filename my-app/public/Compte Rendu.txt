@@ -1,0 +1,12 @@
+05/07/2023 :
+    -Le setTimout() fait buguer le lancement des mes requêtes, il faut que je trouve pourquoi.
+    -Quand une requête est lancée la console en affiche deux c'est normal -> La requête fetch + la requête preflight HTTP
+
+06/07/2023
+    - Le placement de la souris serait le problème
+
+07/07/2023
+    - 
+
+09/07/2023
+    -Il faudrait réussir à mettre un MouseDown aussi pour le chargement des autres repos    

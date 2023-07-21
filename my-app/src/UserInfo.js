@@ -6,7 +6,8 @@ class UserInfo extends React.Component {
 
     render() {
 
-        
+        console.log(this.props.userInfos.depos);
+
         let buttonPrevClass = 'buttonRepo canClick';
         let buttonNextClass = 'buttonRepo canClick';
 
@@ -24,7 +25,7 @@ class UserInfo extends React.Component {
         mais passe true quand on clique, mais uniquement quand il est cliquable*/
         if (this.props.isButtonPrevClicked && this.props.numberReposPages[0] !== 1) {
             isButtonUserPrevClicked = 'clicked'
-            setTimeout(() => {this.props.onMouseUpUserInfo()}, 10000);
+            setTimeout(() => {this.props.onMouseUpUserInfo()}, 500);
         }
 
         let isButtonUserNextClicked = '';
@@ -35,7 +36,7 @@ class UserInfo extends React.Component {
         mais passe true quand on clique, mais uniquement quand il est cliquable*/
         if (this.props.isButtonNextClicked && this.props.numberReposPages[0] !== this.props.numberReposPages[1]) {
             isButtonUserNextClicked = 'clicked'
-            setTimeout(() => {this.props.onMouseUpUserInfo()}, 10000);
+            setTimeout(() => {this.props.onMouseUpUserInfo()}, 500);
         }
 
         return  <div className='infoUserContainer'>
@@ -98,7 +99,7 @@ class UserInfo extends React.Component {
                     <button 
                         id = {isButtonUserPrevClicked}
                         className = {buttonPrevClass + ' prevRepo'}
-                        onClick={() => this.props.previousDepos()}
+                        /*onMouseDown ={() => this.props.previousDepos()}*/
                         onMouseDown = {() => this.props.onMouseDownPrevUserInfo()}
                         /*onMouseUp = {() => this.props.onMouseUpUserInfo()}*/
                         /*onMouseLeave  = {() => this.props.onMouseUpUserInfo()}*/> Back  
@@ -106,7 +107,7 @@ class UserInfo extends React.Component {
                     <button
                         id = {isButtonUserNextClicked}
                         className = {buttonNextClass + ' nextRepo'} 
-                        onClick={() => this.props.nextDepos()}
+                        /*onClick={() => this.props.nextDepos()}*/
                         onMouseDown = {() => this.props.onMouseDownNextUserInfo()}
                         /*onMouseUp = {() => this.props.onMouseUpUserInfo()}*/
                         /*onMouseLeave = {() => this.props.onMouseUpUserInfo()}*/> Next 
