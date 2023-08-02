@@ -6,7 +6,6 @@ import UserInfo from './UserInfo'
 import './App.css';
 import tokenApi from './Token.js'; 
 
-//const tokenApi = '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';
 
 console.log(tokenApi);
 
