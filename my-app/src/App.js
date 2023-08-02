@@ -4,9 +4,11 @@ import Result from './Result';
 import ChangePage from './ChangePage'
 import UserInfo from './UserInfo'
 import './App.css';
+import tokenApi from './Token.js'; 
 
+//const tokenApi = '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';
 
-const tokenApi = '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';
+console.log(tokenApi);
 
 class App extends React.Component {
     constructor(props) {
