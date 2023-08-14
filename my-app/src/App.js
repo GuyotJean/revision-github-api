@@ -5,9 +5,9 @@ import ChangePage from './ChangePage'
 import UserInfo from './UserInfo'
 import './App.css';
 import tokenApi from './Token.js'; 
+import {Routes, Route, Link} from "react-router-dom";
 
 
-console.log(tokenApi);
 
 class App extends React.Component {
     constructor(props) {
@@ -504,7 +504,7 @@ class App extends React.Component {
     }
 
 
-    render() {
+/*    render() {
         const isUserSelected = this.state.userSelected;
          return <div
                 className='container'>
@@ -551,8 +551,48 @@ class App extends React.Component {
                 
             }
          </div> 
-    }
+    }*/
+
+render() {
+    return    <div className = 'container' >
+        <SearchZone
+        searchResult={(e) => this.searchResult(e)}
+        changeInputValue={(e) => this.changeInputValue(e)}
+        className={this.state.className}
+        classSearchBar={this.state.classSearchBar}
+        mouseDown={() => this.mouseDown()}
+        mouseUp={() => this.mouseUp()}
+     />
+        <Routes>
+        <Route path = "/" element = {<Result  
+                valueResult = {this.state.searchValue}
+                usersList = {this.state.userList}
+                selectUser = {index => this.selectUser(index)}
+                mouseOverImg = {index => this.mouseOverImg(index)}
+                mouseOutImg = {index => this.mouseOutImg(index)}
+                arrayCssClass = {this.state.arrayCssClass}/>}>
+        </Route>
+
+        <Route path = "/profil/:id" element={<UserInfo                 
+                returnPage = {() => this.returnPage()}
+                userInfos = {this.state.userInfos}
+                previousDepos = {() => this.previousDepos()}
+                nextDepos = {() => this.nextDepos()}
+                numberReposPages = {this.state.numberReposPages}
+                onMouseDownNextUserInfo = {() => this.onMouseDownNextUserInfo()}
+                onMouseDownPrevUserInfo = {() => this.onMouseDownPrevUserInfo()}
+                onMouseUpUserInfo = {() => this.onMouseUpUserInfo()}
+                isButtonNextClicked = {this.state.isButtonUserNextClicked}
+                isButtonPrevClicked = {this.state.isButtonUserPrevClicked}/>}>    
+        </Route>
+
+
+        </Routes>
+        </div>
 }
+
+} 
+
 
 
 export default App;

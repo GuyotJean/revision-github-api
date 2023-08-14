@@ -6,8 +6,6 @@ class UserInfo extends React.Component {
 
     render() {
 
-        console.log(this.props.userInfos.depos);
-
         let buttonPrevClass = 'buttonRepo canClick';
         let buttonNextClass = 'buttonRepo canClick';
 
@@ -84,10 +82,21 @@ class UserInfo extends React.Component {
                 <div className='divAllRepos'>    
                     {this.props.userInfos.depos.map((element, index) => {
                         return <div 
+
+                                   
+
                                     className='repoItem'
-                                    key={index}>
+                                    key={index}
+                                    >
                                         
-                                        {element.description ? element.description : '&nbsp;'}
+                                        Size : {element.size}
+                                        <span className = 'language'>
+                                        {element.language ? element.language : 'None'}</span>
+                                        
+                                        <span className = 'circle' style = {{backgroundColor : color(element.language)}}></span>
+                                        
+                                        <b><span className = 'name'>{element.name}</span></b>
+                                        <span className = 'desc'>{element.description}</span>
                                     
                                 </div> 
                     })}
@@ -146,5 +155,79 @@ class UserInfo extends React.Component {
 
     }
 }
+
+function color(text) {
+    let colorBack = '';
+    if (text === 'Ruby') {
+    colorBack = 'rgb(236, 77, 77)'
+    return colorBack;
+    }
+    
+    if (text === 'JavaScript') {
+        colorBack = 'rgb(254, 236, 69)'
+        return colorBack;
+    }
+
+    if (text === 'Go') {
+        colorBack = 'rgb(0,172,215)'
+        return colorBack;
+    }
+
+    if (text === 'CSS') {
+        colorBack = 'rgba(33,76,229,255)'
+        return colorBack;
+    }
+
+    if (text === 'Erlang') {
+        colorBack = 'rgba(169,5,51,255)'
+        return colorBack;
+    }
+
+    if (text === 'TypeScript') {
+        colorBack = 'rgba(0,122,204,255)'
+        return colorBack;
+    }
+
+    if (text === 'Scheme') {
+        colorBack = 'black'
+        return colorBack;
+    }
+
+    if (text === 'C') {
+        colorBack = 'rgba(106,238,244,255)';
+        return colorBack;
+    }
+
+    if (text === 'Perl') {
+        colorBack = 'rgba(0,155,201,255)';
+        return colorBack;
+    }
+
+    if (text === 'HTML') {
+        colorBack = 'rgba(255,87,34,255)';
+        return colorBack;
+    }
+
+    if (text === 'Rust') {
+        colorBack = 'rgba(245,104,35,255)';
+        return colorBack;
+    }
+
+    if (text === 'CoffeeScript') {
+        colorBack = 'rgba(40,51,76,255)';
+        return colorBack;
+    }
+
+    if (text === 'Shell') {
+        colorBack = 'rgba(170,187,206,255)';
+        return colorBack;
+    }
+
+    if (text === 'Handlebars') {
+        colorBack = 'rgba(56,39,22,255)'
+        return colorBack;
+    }
+}
+
 
 export default UserInfo;

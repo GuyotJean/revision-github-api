@@ -1,9 +1,12 @@
 import React from "react";
 import "./Result.css";
+import { Link } from "react-router-dom";
 
 class Result extends React.Component {
   render() {
     let usersList = this.props.usersList;
+
+    console.log(usersList);
 
     const userListShow = usersList.map((element, index) => {
       return (
@@ -19,9 +22,11 @@ class Result extends React.Component {
             }}
           ></div>
           <div className="wrapButtonProfil">
+            <Link to = {"/profil/:id"}>
             <div className={"buttonProfil " + "profil" + index}>
               <h4 className="profilTextLink">Voir Profil</h4>
             </div>
+            </Link>
           </div>
         </div>
       );
